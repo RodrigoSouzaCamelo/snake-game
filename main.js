@@ -1,10 +1,21 @@
-let canvas, width, height, fps;
+let canvas, width, height, fps, tileSize;
+let snake;
+
+window.addEventListener("resize", resizeWindow);
+
+function resizeWindow(){
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    tileSize = Math.max(Math.floor(width/60), Math.floor(height/60));
+}
 
 function init() {
     canvas = document.createElement("canvas");
-    canvas.width = 600;
-    canvas.height = 600;
-
+    resizeWindow();
     document.body.appendChild(canvas);
     ctx = canvas.getContext("2d");
     
