@@ -21,7 +21,25 @@ function init() {
     
     fps = 15;
 
+    newGame();
     run();
+}
+
+function newGame(){
+    snake = new Snake();
+}
+
+function Snake(){
+    this.body = [[10,10],[10,11],[10,12]];
+    this.color = "#fff";
+
+    this.draw = function() {
+        ctx.fillStyle = this.color;
+
+        for(i = 0; i < this.body.length; i++){
+            ctx.fillRect(this.body[i][0] * tileSize, this.body[i][1] * tileSize, tileSize, tileSize);
+        }
+    }
 }
 
 function update() {
@@ -35,6 +53,10 @@ function run() {
     setTimeout(run, 1000/fps);
 }
 
-function draw() {}
+function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    snake.draw();
+}
 
 init();
