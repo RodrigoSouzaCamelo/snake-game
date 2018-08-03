@@ -1,4 +1,4 @@
-let canvas, width, height, fps, tileSize;
+let canvas, width, height, fps, tileSize, playing;
 let snake;
 
 window.addEventListener("resize", resizeWindow);
@@ -27,11 +27,35 @@ function init() {
 
 function newGame(){
     snake = new Snake();
+
+    playing = false;
 }
 
 function Snake(){
     this.body = [[10,10],[10,11],[10,12]];
     this.color = "#fff";
+    this.direction = [0, -1];
+
+    this.update = function(){
+        let nextPos = [this.body[0][0] + this.direction[0], this.body[0][1] + this.direction[1]];
+
+        if(!playing){
+            if(this.direction[1] == -1 && nextPos[1] <= (height * 0.1 / tileSize))
+                this.direction = [1, 0];
+
+            else if(this.direction[0] == 1 && nextPos[0] >= (width * 0.9 / tileSize))
+                this.direction = [0, 1];
+
+            else if(this.direction[1] == 1 && nextPos[1] >= (height * 0.9 / tileSize))
+                this.direction = [-1, 0];
+
+            else if(this.direction[0] == -1 && nextPos[0] <= (width * 0.1 / tileSize))
+                this.direction = [0, -1];
+        }
+
+        this.body.pop();
+        this.body.splice(0, 0, nextPos)
+    }
 
     this.draw = function() {
         ctx.fillStyle = this.color;
@@ -43,7 +67,7 @@ function Snake(){
 }
 
 function update() {
-
+    snake.update();
 }
 
 function run() {
