@@ -12,6 +12,9 @@ window.addEventListener("resize", resizeWindow);
 window.addEventListener("keydown", keyDown);
 
 function keyDown(e){
+    if(!playing && (e.keyCode == keys.up || e.keyCode == key.down || e.keyCode == key.right || e.keyCode == key.left))
+        playing = true;
+
     switch(e.keyCode){
         case keys.left:
             snake.direction = [-1, 0];
@@ -80,6 +83,11 @@ function Snake(){
 
             else if(this.direction[0] == -1 && nextPos[0] <= (width * 0.1 / tileSize))
                 this.direction = [0, -1];
+        }
+
+        if(nextPos[0] == this.body[1][0] && nextPos[1] == this.body[1][1]){
+            this.body.reverse();
+            nextPos = [this.body[0][0] + this.direction[0], this.body[0][1] + this.direction[1]];
         }
 
         this.body.pop();
