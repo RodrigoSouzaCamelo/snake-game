@@ -1,5 +1,6 @@
 let canvas, width, height, fps, tileSize, playing;
 let snake;
+let globalTouch = [];
 
 let keys = {
     left: 37,
@@ -8,8 +9,26 @@ let keys = {
     down: 40,
 }
 
+window.addEventListener("touchstart", touchStart);
+window.addEventListener("touchmove", touchMove);
+window.addEventListener("touchend", touchEnd);
 window.addEventListener("resize", resizeWindow);
 window.addEventListener("keydown", keyDown);
+
+function touchStart(e){
+    e.preventDefault();
+
+    let touch = e.touches[0];
+    globalTouch = [touch.pageX, touch.pageY];
+}
+// TODO: Implements function touchMove 
+function touchMove(e){
+
+}
+// TODO: Implements functions touchEnd
+function touchEnd(e){
+
+}
 
 function keyDown(e){
     if(!playing && (e.keyCode == keys.up || e.keyCode == key.down || e.keyCode == key.right || e.keyCode == key.left))
