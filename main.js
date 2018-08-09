@@ -1,6 +1,7 @@
 let canvas, width, height, fps, tileSize, playing;
 let snake;
 let globalTouch = [];
+let offset = [];
 
 let keys = {
     left: 37,
@@ -21,13 +22,18 @@ function touchStart(e){
     let touch = e.touches[0];
     globalTouch = [touch.pageX, touch.pageY];
 }
-// TODO: Implements function touchMove 
+
 function touchMove(e){
+    var touch = e.touches[0];
 
+    offset = [touch.pageX - globalTouch[0], touch.pageY - globalTouch[1]];
 }
-// TODO: Implements functions touchEnd
-function touchEnd(e){
 
+function touchEnd(e){
+    if(Math.abs(offset[0]) > Math.abs(offset[1]))
+        snake.direction = [offset[0] / Math.abs(offset[0]), 0];
+    else 
+        snake.direction = [0, offset[1], Math.abs(offset[1])];
 }
 
 function keyDown(e){
