@@ -88,6 +88,17 @@ function newGame(){
     playing = false;
 }
 
+function PlayLable(){
+    this.text;
+    this.color = "white";
+
+    this.messages = {
+        portrait: "Rotate the device to play",
+        landscape: "Drag the screens to play",
+        pc: "Press the arrows to play"
+    }
+}
+
 function Snake(){
     this.body = [[10,10],[10,11],[10,12]];
     this.color = "#fff";
