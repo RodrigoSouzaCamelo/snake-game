@@ -88,6 +88,7 @@ function newGame(){
     playing = false;
 }
 
+//TODO: implements game home screen
 function PlayLable(){
     this.text;
     this.color = "white";
