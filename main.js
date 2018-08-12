@@ -1,5 +1,5 @@
 let canvas, width, height, fps, tileSize, playing;
-let snake;
+let snake, playLabel;
 let globalTouch = [];
 let offset = [];
 
@@ -84,12 +84,11 @@ function init() {
 
 function newGame(){
     snake = new Snake();
-
+    playLabel = new PlayLabel();
     playing = false;
 }
 
-//TODO: implements game home screen
-function PlayLable(){
+function PlayLabel(){
     this.text;
     this.color = "white";
 
@@ -97,6 +96,12 @@ function PlayLable(){
         portrait: "Rotate the device to play",
         landscape: "Drag the screens to play",
         pc: "Press the arrows to play"
+    }
+
+    this.draw = function(){
+        ctx.fillStyle = this.color;
+        ctx.font = tileSize + "px Arial";
+        ctx.fillText(this.text, width/2 - ctx.measureText(this.text).width /2, height/2);
     }
 }
 
@@ -155,6 +160,9 @@ function draw() {
     ctx.clearRect(0, 0, width, height);
 
     snake.draw();
+
+    if(!playing)
+        playLabel.draw();
 }
 
 init();
