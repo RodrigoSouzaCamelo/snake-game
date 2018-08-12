@@ -102,9 +102,15 @@ function PlayLabel(){
         pc: "Press the arrows to play"
     }
 
+    if(isMobileDevice()){
+
+    } else {
+        this.text = this.messages.pc;
+    }
+
     this.draw = function(){
         ctx.fillStyle = this.color;
-        ctx.font = tileSize + "px Arial";
+        ctx.font = tileSize * 2 + "px Arial";
         ctx.fillText(this.text, width/2 - ctx.measureText(this.text).width /2, height/2);
     }
 }
