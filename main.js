@@ -70,6 +70,10 @@ function resizeWindow(){
     tileSize = Math.max(Math.floor(width/60), Math.floor(height/60));
 }
 
+function isMobileDevice(){
+    return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent)
+}
+
 function init() {
     canvas = document.createElement("canvas");
     resizeWindow();
