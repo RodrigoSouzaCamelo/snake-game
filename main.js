@@ -16,31 +16,31 @@ window.addEventListener("touchend", touchEnd);
 window.addEventListener("resize", resizeWindow);
 window.addEventListener("keydown", keyDown);
 
-function touchStart(e){
+function touchStart(e) {
     e.preventDefault();
 
     let touch = e.touches[0];
     globalTouch = [touch.pageX, touch.pageY];
 }
 
-function touchMove(e){
+function touchMove(e) {
     var touch = e.touches[0];
 
     offset = [touch.pageX - globalTouch[0], touch.pageY - globalTouch[1]];
 }
 
-function touchEnd(e){
-    if(Math.abs(offset[0]) > Math.abs(offset[1]))
+function touchEnd(e) {
+    if (Math.abs(offset[0]) > Math.abs(offset[1]))
         snake.direction = [offset[0] / Math.abs(offset[0]), 0];
-    else 
+    else
         snake.direction = [0, offset[1], Math.abs(offset[1])];
 }
 
-function keyDown(e){
-    if(!playing && (e.keyCode == keys.up || e.keyCode == key.down || e.keyCode == key.right || e.keyCode == key.left))
+function keyDown(e) {
+    if (!playing && (e.keyCode == keys.up || e.keyCode == key.down || e.keyCode == key.right || e.keyCode == key.left))
         playing = true;
 
-    switch(e.keyCode){
+    switch (e.keyCode) {
         case keys.left:
             snake.direction = [-1, 0];
             break;
@@ -60,17 +60,17 @@ function keyDown(e){
     }
 }
 
-function resizeWindow(){
+function resizeWindow() {
     width = window.innerWidth;
     height = window.innerHeight;
 
     canvas.width = width;
     canvas.height = height;
 
-    tileSize = Math.max(Math.floor(width/60), Math.floor(height/60));
+    tileSize = Math.max(Math.floor(width / 60), Math.floor(height / 60));
 }
 
-function isMobileDevice(){
+function isMobileDevice() {
     return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent)
 }
 
@@ -79,20 +79,20 @@ function init() {
     resizeWindow();
     document.body.appendChild(canvas);
     ctx = canvas.getContext("2d");
-    
+
     fps = 15;
 
     newGame();
     run();
 }
 
-function newGame(){
+function newGame() {
     snake = new Snake();
     playLabel = new PlayLabel();
     playing = false;
 }
 
-function PlayLabel(){
+function PlayLabel() {
     this.text;
     this.color = "white";
 
@@ -102,42 +102,48 @@ function PlayLabel(){
         pc: "Press the arrows to play"
     }
 
-    if(isMobileDevice()){
-
-    } else {
-        this.text = this.messages.pc;
+    this.update = function () {
+        if (isMobileDevice()) {
+            if (width < height) {
+                this.text = this.messages.portrait;
+            } else {
+                this.text = this.messages.landscape;
+            }
+        } else {
+            this.text = this.messages.pc;
+        }
     }
 
-    this.draw = function(){
+    this.draw = function () {
         ctx.fillStyle = this.color;
         ctx.font = tileSize * 2 + "px Arial";
-        ctx.fillText(this.text, width/2 - ctx.measureText(this.text).width /2, height/2);
+        ctx.fillText(this.text, width / 2 - ctx.measureText(this.text).width / 2, height / 2);
     }
 }
 
-function Snake(){
-    this.body = [[10,10],[10,11],[10,12]];
+function Snake() {
+    this.body = [[10, 10], [10, 11], [10, 12]];
     this.color = "#fff";
     this.direction = [0, -1];
 
-    this.update = function(){
+    this.update = function () {
         let nextPos = [this.body[0][0] + this.direction[0], this.body[0][1] + this.direction[1]];
 
-        if(!playing){
-            if(this.direction[1] == -1 && nextPos[1] <= (height * 0.1 / tileSize))
+        if (!playing) {
+            if (this.direction[1] == -1 && nextPos[1] <= (height * 0.1 / tileSize))
                 this.direction = [1, 0];
 
-            else if(this.direction[0] == 1 && nextPos[0] >= (width * 0.9 / tileSize))
+            else if (this.direction[0] == 1 && nextPos[0] >= (width * 0.9 / tileSize))
                 this.direction = [0, 1];
 
-            else if(this.direction[1] == 1 && nextPos[1] >= (height * 0.9 / tileSize))
+            else if (this.direction[1] == 1 && nextPos[1] >= (height * 0.9 / tileSize))
                 this.direction = [-1, 0];
 
-            else if(this.direction[0] == -1 && nextPos[0] <= (width * 0.1 / tileSize))
+            else if (this.direction[0] == -1 && nextPos[0] <= (width * 0.1 / tileSize))
                 this.direction = [0, -1];
         }
 
-        if(nextPos[0] == this.body[1][0] && nextPos[1] == this.body[1][1]){
+        if (nextPos[0] == this.body[1][0] && nextPos[1] == this.body[1][1]) {
             this.body.reverse();
             nextPos = [this.body[0][0] + this.direction[0], this.body[0][1] + this.direction[1]];
         }
@@ -146,10 +152,10 @@ function Snake(){
         this.body.splice(0, 0, nextPos)
     }
 
-    this.draw = function() {
+    this.draw = function () {
         ctx.fillStyle = this.color;
 
-        for(i = 0; i < this.body.length; i++){
+        for (i = 0; i < this.body.length; i++) {
             ctx.fillRect(this.body[i][0] * tileSize, this.body[i][1] * tileSize, tileSize, tileSize);
         }
     }
@@ -163,7 +169,7 @@ function run() {
     update();
     draw();
 
-    setTimeout(run, 1000/fps);
+    setTimeout(run, 1000 / fps);
 }
 
 function draw() {
@@ -171,8 +177,10 @@ function draw() {
 
     snake.draw();
 
-    if(!playing)
+    if (!playing) {
+        playLabel.update();
         playLabel.draw();
+    }
 }
 
 init();
